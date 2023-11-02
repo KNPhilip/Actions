@@ -1,4 +1,4 @@
-name: first-workflow
+name: First Workflow
 on: workflow_dispatch
 jobs:
   first-job:
@@ -8,9 +8,6 @@ jobs:
         run: echo "Hello World!"
       - name: Print goodbye
         run: echo "Done - bye!"
-  second-job:
-    runs-on: ubuntu-latest
-    steps:
       - name: Last step!
         run: |
           echo "First output"
