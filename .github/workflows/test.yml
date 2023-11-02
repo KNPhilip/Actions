@@ -1,0 +1,19 @@
+name: Test runner
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Setup node v18
+        uses: actions/setup-node@v3
+        width:
+          node-version: 18 
+      - name: Install dependencies
+        run: npm i --legacy-peer-deps
+      - name: Run tests
+        run: npm test
