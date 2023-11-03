@@ -1,0 +1,10 @@
+name: Handle issues
+on: issues
+jobs:
+  output-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print out event details
+        run: echo "${{ toJSON(issues) }}"
+      - name: Print out GitHub context
+        run: echo "${{ toJSON(github.event) }}"
