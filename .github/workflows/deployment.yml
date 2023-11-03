@@ -1,9 +1,26 @@
 name: Deploy Project
 on:
   push:
+    # Runs workflow when pushing to these target branches.
     branches:
-      - 'main'
+      - main
+      - 'dev-*' # dev-new dev-something - NOT: dev-some-thing
+      - 'dev/**' # dev/new dev/something AND dev/some/thing
+# Ignores when something is pushed to a specific branch
+#    branches-ignore:
+#      - dumb-branch
+# Doesnt run workflow when push is changing the workflows
+    paths-ignore:
+      - '.github/workflows/*'
   workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+    # runs when PRs targeting specific branches
+    branches:
+      - main
+      - 'dev-*' # dev-new dev-something - NOT: dev-some-thing
+      - 'dev/**' # dev/new dev/something AND dev/some/thing
 jobs:
   test:
     runs-on: ubuntu-latest
