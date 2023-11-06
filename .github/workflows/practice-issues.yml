@@ -1,8 +1,0 @@
-name: Handle issues
-on: workflow_dispatch
-jobs:
-  output-info:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print out GitHub context
-        run: echo "${{ toJSON(github.event) }}"
