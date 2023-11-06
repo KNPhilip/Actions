@@ -31,7 +31,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18 
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          # The key is used to retrieve the cache on the runner machine
+          # Also indicates whether the cache should be discarded or not,
+          # since it's a dynamic name that changes along with updated dependencies.
+          key: deps-node-module-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
+        # This command already checks the cache so no need to do anything here
         run: npm i --legacy-peer-deps
       - name: Run tests
         run: npm run test
@@ -48,6 +57,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          # The key is used to retrieve the cache on the runner machine
+          # Also indicates whether the cache should be discarded or not,
+          # since it's a dynamic name that changes along with updated dependencies.
+          key: deps-node-module-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm i --legacy-peer-deps
       - name: Build project
