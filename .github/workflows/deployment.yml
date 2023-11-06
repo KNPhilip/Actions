@@ -35,7 +35,7 @@ jobs:
         run: npm i --legacy-peer-deps
       - name: Run tests
         run: npm run test
-  deploy:
+  build:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -49,5 +49,16 @@ jobs:
         run: npm i --legacy-peer-deps
       - name: Build project
         run: npm run build
-      - name: Deploy
-        run: echo "Simulate deploying ..."
+      - name: Upload artifacts
+        uses: actions/upload-artifacts@v3
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest:
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
