@@ -1,0 +1,5 @@
+name: 'Upload to AWS'
+description: 'Uploads build website code to an AWS S3 bucket.'
+runs:
+  using: node16
+  main: main.js
