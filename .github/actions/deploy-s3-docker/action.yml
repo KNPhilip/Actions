@@ -1,0 +1,20 @@
+name: Upload to AWS with Docker (Python)
+description: Uploads the build to AWS using a Docker container running a Python program.
+inputs:
+  bucket:
+    description: Name of the S3 bucket to upload the files to.
+    required: true
+  bucket-region:
+    description: The region of the S3 bucket.
+    required: false
+    default: us-east-1
+  dist-files:
+    description: The folder containing the deployable files.
+    required: false
+    default: dist
+outputs:
+  website-url:
+    description: The URL of the deployed website.
+runs:
+  uses: docker
+  image: Dockerfile
