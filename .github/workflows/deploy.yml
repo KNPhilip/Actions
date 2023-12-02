@@ -1,8 +1,5 @@
 name: Deployment
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -10,10 +7,15 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
       - name: Use custom actions
+        id: custom-cache
         # Find custom action by directory path
         uses: ./.github/actions/cached-deps
+        with:
+          caching: 'false'
         # Find custom action by GitHub repo reference
         # uses: knphilip/actionname
+      - name: Output information
+        run: echo "Cache used == ${{ steps.custom-cache.outputs.cache-hit }}"
       - name: Lint code
         run: npm run lint
   test:
