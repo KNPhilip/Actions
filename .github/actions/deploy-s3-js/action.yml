@@ -1,10 +1,10 @@
-name: Upload to AWS
+name: Upload to AWS with JavaScript
 description: Uploads build website code to an AWS S3 bucket.
 inputs:
   bucket:
     description: The S3 bucket name.
     required: true
-  bucket_region:
+  bucket-region:
     description: The name of the S3 buckets region
     required: false
     default: us-east-1
