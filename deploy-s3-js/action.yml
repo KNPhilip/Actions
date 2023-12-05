@@ -1,0 +1,20 @@
+name: Deploy to S3 using JavaScript
+description: Uses JavaScript to deploy to AWS.
+inputs:
+  bucket:
+    description: Name of the S3 bucket to deploy to.
+    required: true
+  bucket-region:
+    description: Name of the region the bucket belongs to.
+    required: false
+    default: us-east-1
+  dist-files:
+    description: Location of the dist files
+    required: false
+    default: dist
+outputs:
+  website-url:
+    description: URL of the website to be deployed.
+runs:
+  using: node20
+  main: main.js
