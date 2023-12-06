@@ -1,0 +1,94 @@
+name: Demo workflow
+on: workflow_dispatch # [workflow_dispatch, push]
+#   workflow_dispatch:
+#   push:
+#     branches:
+#       - main
+#   issue:
+#     types:
+#       - opened
+env:
+  demo-env-variable: Hello world! # ${{ secrets.DEMO }}
+jobs:
+  testing:
+    environment: testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install node version 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: node-modules-deps-${{ hashFiles('*/package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm i
+      - name: Use linter
+        run: npm run lint
+      - name: Run tests
+        run: npm test
+      - name: Print out env variable
+        run: echo "$demo-env-variable"
+      - name: Same as above but different syntax
+        run: echo "${{ env.demo-env-variable }}"
+  build:
+    environment: testing
+    needs: testing
+    runs-on: ubuntu-latest
+    outputs:
+      hello-world: message
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install node v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+        # TODO: refactor to reusable workflow
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: node-modules-deps-${{ hashFiles('*/package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit == 'false'
+        run: npm i
+      - name: Build code
+        run: npm run build
+      - name: Output Hello World
+        run: echo "message='Hello World!'" >> $GITHUB_OUTPUT}"
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: dist
+          name: build-files
+  deploy:
+    environment: testing
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/download-artifact@v3
+        with:
+          name: build-files
+      - name: List build files
+        run: ls
+      - name: Print output from build job
+        run: echo "${{ needs.build.outputs.hello-world }}"
+      - name: Simulate deployment
+        run: echo "Deploying..."
+  report-issue:
+    environment: testing
+    needs: [testing, build, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print out GH context
+        run: echo "${{ github }}"
