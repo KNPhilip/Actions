@@ -11,6 +11,9 @@ env:
   demo-env-variable: Hello world! # ${{ secrets.DEMO }}
 jobs:
   testing:
+    strategy:
+      matrix:
+        node-version: [18, 12, 16]
     environment: testing
     runs-on: ubuntu-latest
     steps:
@@ -19,7 +22,7 @@ jobs:
       - name: Install node version 18
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: ${{ matrix.node-version }}
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
