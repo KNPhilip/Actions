@@ -1,13 +1,17 @@
 name: Build & Push local Dockerfile.
 description: This composite action simply builds the specified Dockerfile and pushes it to the DockerHub account with the provided credentials.
 inputs:
+  tags:
+    description: Name of the user/image-name. For instance knphilip/image:latest.
+    required: true
   file:
     description: Path to reach the Dockerfile.
     required: false
     default: Dockerfile
-  tags:
-    description: Name of the user/image-name. For instance knphilip/image:latest.
-    required: true
+  context:
+    description: The context/path to where the Dockerfile layer instructions should be run.
+    required: false
+    default: .
   username:
     description: Username of the DockerHub account to push to.
     required: true
@@ -28,5 +32,6 @@ runs:
       uses: docker/build-push-action@v3
       with:
         push: true
+        context: ${{ inputs.context }}
         file: ${{ inputs.file }}
         tags: ${{ inputs.tags }}
