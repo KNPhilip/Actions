@@ -11,7 +11,7 @@ inputs:
   context:
     description: The context/path to where the Dockerfile layer instructions should be run.
     required: false
-    default: .
+    default: "{{defaultContext}}"
   username:
     description: Username of the DockerHub account to push to.
     required: true
