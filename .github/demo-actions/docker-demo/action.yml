@@ -1,5 +1,0 @@
-name: Custom Docker action demo
-description: Simply uses a Docker container to print out a message.
-runs:
-  using: docker
-  image: Dockerfile
